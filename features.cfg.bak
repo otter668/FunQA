@@ -1,0 +1,88 @@
+{
+  "baseline":
+  {
+    "bow": "term",
+    "pos": "pos"
+  },
+  "bow":
+  {
+    "bow": "term"
+  },
+  "bow/pos":
+  {
+    "bow/pos": "@get_bow_pos"
+  },
+  "bow+bow/pos":
+  {
+    "bow": "term",
+    "bow/pos": "@get_bow_pos"
+  },
+  "b+bow/pos":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "bow/pos": "@get_bow_pos"
+  },
+  "b+q":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "ne": "ne",
+    "qw": "@get_qw"
+  },
+  "b+r":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "ne": "ne",
+    "rel": "@get_rel"
+  },
+  "b+q+r":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "qw": "@get_qw",
+    "rel": "@get_rel"
+  },
+  "b+q+r+SBJ+OBJ":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "qw": "@get_qw",
+    "rel": "@get_rel",
+    "sbj": "@get_sbj",
+    "obj": "@get_obj"
+  },
+  "b+q+r+r/pos+SBJ+SBJ/pos+OBJ+OBJ/pos":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "qw": "@get_qw",
+    "rel": "@get_rel",
+    "rel/pos" : "@get_rel_pos",
+    "sbj": "@get_sbj",
+    "sbj/pos": "@get_sbj_pos",
+    "obj": "@get_obj",
+    "obj/pos": "@get_obj_pos"
+  },
+  "b+q_r":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "qw_rel": "@get_qw_rel"
+  },
+  "b+q+r+r/pos":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "qw": "@get_qw",
+    "rel": "@get_rel",
+    "rel/pos": "@get_rel_pos"
+  },
+  "b+q_r_r/pos":
+  {
+    "bow": "term",
+    "pos": "pos",
+    "qw_rel_pos": "@get_qw_rel_relpos"
+  }
+}
