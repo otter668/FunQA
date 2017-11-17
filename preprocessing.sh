@@ -14,6 +14,6 @@ fi
 # 分词，词性标注，命名实体识别和依存句法分析
 if [ ! -s data/$6$3 ]; then
     python tokenizer.py -s $7 -l -p < data/$4$3 | python nerecognizer.py | python parser.py > data/$6$3
+    # 预处理结束，打印结果信息
+    echo Preprocessing $2$3 End!
 fi
-# 预处理结束，打印结果信息
-echo Preprocessing $2$3 End!

@@ -309,7 +309,7 @@ $ train -v 10 data/baseline_coarse_vec
 > encoding.sh   根据需要进行编码，并分割为训练集和测试集。
 > svm.sh    进行训练和预测。
 > funqa.sh  调用上述各个脚本。根据features.in文件的内容或者指定特征以及特征文件名的方式进行批处理。
-
+> deltempfiles.sh 删除所有编码和训练过程中的临时文件。
 
 ## 13 LSTM
 
