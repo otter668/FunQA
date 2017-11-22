@@ -97,38 +97,60 @@ class Analyzer(object):
 
     def print_info(self):
         for key in self.data.perdicts:
-            print(key, end='\t')
+            sigma_p = 0
+            sigma_r = 0
+            sigma_f = 0
+            print(key, end=' ')
             tps = sum(self.all_labs_tp[key].values())
             count = len(self.all_items[key])
             print('Accuracy={:.4%} ({}/{})'.format(tps/count, tps, count))
+            print('\t'.join(('label', '#Train', '#Precision\t', '#Recall\t', '#F1-Measure')))
             for label in self.all_labs_tp_fn:
-                print(' '.join((label, self.data.perdicts[key]['ts'][label])), end='')
+                print(' '.join((label, self.data.perdicts[key]['ts'][label])), end='\t')
                 tp = self.all_labs_tp[key][label]
                 tp_fp = self.all_labs_tp_fp[key][label]
                 tp_fn = self.all_labs_tp_fn[label]
+                p = 0
                 if tp_fp!=0:
-                    print(' Precision={0:.4%} ({1}/{2}) Recall={3:.4%} ({1}/{4}) F1-Measure={5:.4%}'.format(
-                        tp/tp_fp, tp, tp_fp, tp/tp_fn, tp_fn, 2*tp/(tp_fp+tp_fn)))
-                else:
-                    print(' Precision=0.0000% ({0}/{1}) Recall=0.0000% ({0}/{2}) F1-Measure=0%'.format(tp, tp_fp, tp_fn))
+                    p = tp / tp_fp
+                    sigma_p += p * tp_fn
+                r = tp / tp_fn
+                sigma_r += r * tp_fn
+                f = 2 * tp / (tp_fp + tp_fn)
+                sigma_f += f * tp_fn
+                print('{0:.4%} ({1}/{2})\t{3:.4%} ({1}/{4})\t{5:.4%}'.format(p, tp, tp_fp, r, tp_fn, f))
+            print('\t\t{:.4%}\t\t{:.4%}\t\t{:.4%}'.format(sigma_p/count, sigma_r/count, sigma_f/count))
 
     def analyze(self):
-        command = dict()
-        command['lists'] = 'item.label == label'
-        command['errors'] = 'not item.equals() and item.label == label'
-        command['perdicts'] = 'item.perdict == label'
-        print('<Training set>;<lists|errors|perdicts> {label}')
-        print('Training set:\t', '\t'.join(key for key in self.data.perdicts))
+        command = dict(list = lambda x,y:x.label == y,
+                       error = lambda x,y: not x.equals() and x.label == y,
+                       perdict = lambda x,y:x.perdict == y)
+        # command['lists'] = 'item.label == label'
+        # command['lists'] = lambda x,y:x==y
+        # command['errors'] = 'not item.equals() and item.label == label'
+        # command['perdicts'] = 'item.perdict == label'
+        print('Usage: <label1[ label2[ labeln]];>|<exit>[action;][TrainingSet;]')
+        print('labels see above. or exit')
+        print('action: list, error, perdict')
+        print('TrainingSet: ', ' '.join(key for key in self.data.perdicts))
+        action = 'error'
+        key = list(self.data.perdicts.keys())[-1]
         while(True):
             commandline = input('$ ')
-            key = commandline.split(';')[0]
-            action = commandline.split(';')[-1].split(' ')[0]
-            label = commandline.split(';')[-1].split(' ')[-1]
-            if key.lower().startswith('exit'):
+            cmds = commandline.split(';')
+            labels = cmds[0].strip().split(' ')
+            if len(cmds) >= 2:
+                action = cmds[1]
+            if len(cmds) == 3:
+                key = cmds[2]
+            if labels[0].lower().startswith('exit'):
                 return
+            print('TrainingSet: ', ' '.join(key for key in self.data.perdicts))
+            print('\t\t'.join(('TestSet', 'Perdict', 'Question')))
             for item in self.all_items[key]:
-                if eval(command[action]):
-                    print(item)
+                for label in labels:
+                    if command[action](item, label):
+                        print(item)
 
 
 def main(test, results, taxonomy):
