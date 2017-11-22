@@ -44,7 +44,7 @@ class Result(object):
         self.perdict = ''
 
     def __str__(self):
-        return '{}\t{}\t{}'.format(self.label, self.question, self.perdict)
+        return '{}\t{}\t{}'.format(self.label, self.perdict, self.question)
 
     def equals(self):
         return self.label == self.perdict
@@ -100,17 +100,17 @@ class Analyzer(object):
             print(key, end='\t')
             tps = sum(self.all_labs_tp[key].values())
             count = len(self.all_items[key])
-            print('Accuracy={:.4%}({}/{})'.format(tps/count, tps, count))
+            print('Accuracy={:.4%} ({}/{})'.format(tps/count, tps, count))
             for label in self.all_labs_tp_fn:
-                print('/'.join((label, self.data.perdicts[key]['ts'][label])), end='')
+                print(' '.join((label, self.data.perdicts[key]['ts'][label])), end='')
                 tp = self.all_labs_tp[key][label]
                 tp_fp = self.all_labs_tp_fp[key][label]
                 tp_fn = self.all_labs_tp_fn[label]
                 if tp_fp!=0:
-                    print('\tPrecision={0:.4%}({1}/{2}),Recall={3:.4%}({1}/{4}),F1-Measure={5:.4%}'.format(
+                    print(' Precision={0:.4%} ({1}/{2}) Recall={3:.4%} ({1}/{4}) F1-Measure={5:.4%}'.format(
                         tp/tp_fp, tp, tp_fp, tp/tp_fn, tp_fn, 2*tp/(tp_fp+tp_fn)))
                 else:
-                    print('\tPrecision=0.0000%({0}/{1}),Recall=0.0000%({0}/{2}),F1-Measure=0%'.format(tp, tp_fp, tp_fn))
+                    print(' Precision=0.0000% ({0}/{1}) Recall=0.0000% ({0}/{2}) F1-Measure=0%'.format(tp, tp_fp, tp_fn))
 
     def analyze(self):
         command = dict()
