@@ -1,2 +1,2 @@
-bow baseline b+q_r b+q+r b+q_r_r/pos b+q+r+r/pos
-bow baseline bqr bqri bqrrp bqrrpi
+bow baseline b+q b+r b+q+r
+bow baseline bq br bqr

@@ -3270,7 +3270,7 @@ NUM_MONEY 我国目前拥有多少外债
 NUM_MULTIPLE 房屋受灾面积占几成
 NUM_MULTIPLE 高雄县的土地面积大概是台北市几倍
 NUM_MULTIPLE 四川的面积是香港的多少倍
-NUM_OHTER 地球的半径是多少
+NUM_OTHER 地球的半径是多少
 NUM_ORDER 1950年6月27日，美国的第几舰队侵入台湾海峡
 NUM_ORDER 1982年宪法是我国建国以来第几部宪法
 NUM_ORDER 2001年北京主办的世界大运会是第几届
@@ -3348,7 +3348,7 @@ NUM_ORDER 第几届奥运会开始跳水被列为比赛项目
 NUM_ORDER 朱德在十大元帅中排第几
 NUM_ORDER 李元霸在隋唐英雄传中排第几
 NUM_ORDER 鄱阳湖是中国第几大淡水湖
-UM_ORDER 奥巴马是美国第几届总统
+NUM_ORDER 奥巴马是美国第几届总统
 NUM_ORDER 复旦大学工商管理系在中国高校中排名第几
 NUM_ORDER 北京奥运会中国排名第几
 NUM_OTHER 3-4岁小儿每天应吃多少饭

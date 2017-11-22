@@ -5,18 +5,17 @@ if [ ! -s features.log ]; then
     echo 'the file feature.log doesnot exist!'
     exit 1
 fi
+for name in 'seg' 'splitpoint' 'corpora'; do
+    for fname in data/$name*; do
+        rm -f $fname
+    done
+done
 while read line; do
-rm -f data/"$line"
-rm -f data/"$line"_fine_vec
-rm -f data/"$line"_coarse_vec
-rm -f data/"$line"_fine_vec_1
-rm -f data/"$line"_coarse_vec_1
-rm -f data/"$line"_fine_vec_2
-rm -f data/"$line"_coarse_vec_2
-rm -f data/"$line"_fine_line_model
-rm -f data/"$line"_coarse_line_model
-rm -f data/"$line"_fine_line_result
-rm -f data/"$line"_coarse_line_result
+    rm -f data/"$line"
+    for fn in data/"$line"_*; do
+        rm -f $fn
+        # echo $fn
+    done
 done <features.log
 rm -f features.log
 echo DONE!

@@ -3,7 +3,7 @@
 # 1. 输入经分词过的语料数据文件，如：seg
 # 2. 分割点文件，如：splitpoint
 # 3. 特征名称，如：bow，baseline，b+q+r
-# 4. 特征对应的存储文件名前缀，如：bow，baseline，b_q_r
+# 4. 特征对应的存储文件名前缀，如：bow，baseline，bqr
 # 5. 分割方式，如：seq、ran、tag
 # 抽取特征模版
 if [ ! -s data/$4 ]; then
@@ -11,10 +11,10 @@ if [ ! -s data/$4 ]; then
 fi
 # 分小类和大类编码
 if [ ! -s data/$4_fine_vec ]; then
-    python wordset_encoding.py -f $3 < data/$4 > data/$4_fine_vec
+    python wordset_encoding.py -f $3 -o -if data/$4 > data/$4_fine_vec
 fi
 if [ ! -s data/$4_coarse_vec ]; then
-    python wordset_encoding.py -t -f $3 < data/$4 > data/$4_coarse_vec
+    python wordset_encoding.py -t -f $3 -o -if data/$4 > data/$4_coarse_vec
 fi
 # 分割为测试集和训练集
 if [ ! -s data/$4_fine_vec_1 ] || [ ! -s data/$4_fine_vec_2 ]; then
