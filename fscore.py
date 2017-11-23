@@ -53,6 +53,7 @@ class Result(object):
 
 class Analyzer(object):
     path = 'data/'
+    surfixs = ('', '+', '-', '+-')
     all_items = dict()
     all_labs_tp = dict()
     all_labs_tp_fp = dict()
@@ -63,12 +64,13 @@ class Analyzer(object):
         self.data = Data(self.test_file, taxonomy)
         results = []
         labs = []
+        file_name_starts = [''.join((prefix_result_file, surfix)) for surfix in self.surfixs]
         for file_name in os.listdir(self.path):
             parts_file_name = file_name.split('_')
-            if file_name.startswith(prefix_result_file) and file_name.endswith('result'):
+            if parts_file_name[0] in file_name_starts and file_name.endswith('result'):
                 if taxonomy in parts_file_name:
                     results.append(''.join((self.path, file_name)))
-            if file_name.startswith(prefix_result_file) and file_name.endswith('vocab'):
+            if parts_file_name[0] in file_name_starts and file_name.endswith('vocab'):
                 if 'label' in parts_file_name:
                     if taxonomy in parts_file_name:
                         labs.append(''.join((self.path, file_name)))
@@ -97,9 +99,7 @@ class Analyzer(object):
 
     def print_info(self):
         for key in self.data.perdicts:
-            sigma_p = 0
-            sigma_r = 0
-            sigma_f = 0
+            sigma_tp_fp = 0
             print(key, end=' ')
             tps = sum(self.all_labs_tp[key].values())
             count = len(self.all_items[key])
@@ -113,13 +113,14 @@ class Analyzer(object):
                 p = 0
                 if tp_fp!=0:
                     p = tp / tp_fp
-                    sigma_p += p * tp_fn
+                    sigma_tp_fp += tp_fp
                 r = tp / tp_fn
-                sigma_r += r * tp_fn
                 f = 2 * tp / (tp_fp + tp_fn)
-                sigma_f += f * tp_fn
                 print('{0:.4%} ({1}/{2})\t{3:.4%} ({1}/{4})\t{5:.4%}'.format(p, tp, tp_fp, r, tp_fn, f))
-            print('\t\t{:.4%}\t\t{:.4%}\t\t{:.4%}'.format(sigma_p/count, sigma_r/count, sigma_f/count))
+            avg_p = tps/sigma_tp_fp
+            avg_r = tps/count
+            avg_f = 2 * avg_p * avg_r / (avg_p + avg_r)
+            print('\t\t{:.4%}\t\t{:.4%}\t\t{:.4%}'.format(avg_p, avg_r, avg_f))
 
     def analyze(self):
         command = dict(list = lambda x,y:x.label == y,
