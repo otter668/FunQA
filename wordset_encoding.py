@@ -29,12 +29,11 @@ def build_vocab(taxonomy, features, filename):
     return vocab
 
 
-
 def encoding(vocab, taxonomy, filename):
     features = [v for v in sorted(vocab) if v != 'label']
     offsets = [0]
-    for f in features:
-        offsets.append(offsets[-1] + len(vocab[f]))
+    for ft in features:
+        offsets.append(offsets[-1] + len(vocab[ft]))
     with open(filename, 'r', encoding='utf-8') as f:
         for line in f:
             sent = json.loads(line)
@@ -42,11 +41,11 @@ def encoding(vocab, taxonomy, filename):
             if taxonomy:
                 label = sent['label'][:sent['label'].index('_')]
             print(vocab['label'][label]['index'] + 1, end=' ')
-            for feature, fname, offset in zip([sent[f] for f in features], features, offsets):
-                f = ['{}:1'.format(index)
+            for feature, fname, offset in zip([sent[ft] for ft in features], features, offsets):
+                ftc = ['{}:1'.format(index)
                      for index in sorted([vocab[fname][item]['index'] + offset + 1
                                           for item in set(feature)])]
-                print(' '.join(f), end=' ')
+                print(' '.join(ftc), end=' ')
             print()
 
 
